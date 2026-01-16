@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= content_for(:title) || "Gestao Equipamentos" %></title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%= yield :head %>
+
+    <%# Enable PWA manifest for installable apps (make sure to enable in config/routes.rb too!) %>
+    <%#= tag.link rel: "manifest", href: pwa_manifest_path(format: :json) %>
+
+    <link rel="icon" href="/icon.png" type="image/png">
+    <link rel="icon" href="/icon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="/icon.png">
+
+    <%# Includes all stylesheet files in app/assets/stylesheets %>
+    <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
+    <%= javascript_importmap_tags %>
+  </head>
+
+  <body class="bg-gray-50 flex flex-col min-h-screen font-sans text-gray-800">
+    <!-- Header Gov.br -->
+    <header>
+      <!-- Top Bar -->
+      <div class="bg-[#071d41] text-white py-1 px-4 text-xs font-bold">
+        <div class="container mx-auto flex justify-between items-center">
+          <span>BRASIL</span>
+          <a href="#" class="hover:underline">Acesso à informação</a>
+        </div>
+      </div>
+      
+      <!-- Main Header -->
+      <div class="bg-white border-b border-gray-200 shadow-sm">
+        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+          <div class="flex items-center gap-4">
+            <%= link_to root_path, class: "flex items-center gap-2 group" do %>
+              <span class="text-3xl font-black text-[#1351b4] tracking-tight group-hover:opacity-90">gov.br</span>
+              <span class="text-gray-400 text-2xl font-light">|</span>
+              <span class="text-gray-600 font-semibold text-lg group-hover:text-[#1351b4] transition-colors">Gestão de Equipamentos</span>
+            <% end %>
+          </div>
+
+          <div class="flex items-center gap-4">
+            <% if authenticated? %>
+              <div class="flex items-center gap-3">
+                <div class="text-right hidden md:block">
+                  <p class="text-sm font-bold text-gray-700"><%= Current.user.email_address %></p>
+                  <p class="text-xs text-gray-500">Administrador</p>
+                </div>
+                <%= button_to "Sair", session_path, method: :delete, class: "px-4 py-2 text-sm font-medium text-[#1351b4] border border-[#1351b4] rounded-full hover:bg-blue-50 transition-colors cursor-pointer" %>
+              </div>
+            <% else %>
+              <%= link_to "Entrar", new_session_path, class: "px-6 py-2 text-sm font-bold text-white bg-[#1351b4] rounded-full hover:bg-blue-800 transition-colors shadow-sm" %>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="flex-grow container mx-auto px-4 py-8">
+      <%= yield %>
+    </main>
+
+    <!-- Footer Gov.br -->
+    <footer class="bg-[#071d41] text-white py-8 mt-auto">
+      <div class="container mx-auto px-4">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+          <div>
+            <h3 class="font-bold text-lg mb-4">Acesso à Informação</h3>
+            <ul class="space-y-2 text-sm text-gray-300">
+              <li><a href="#" class="hover:text-white hover:underline">Dados Abertos</a></li>
+              <li><a href="#" class="hover:text-white hover:underline">Transparência</a></li>
+            </ul>
+          </div>
+          <div>
+            <h3 class="font-bold text-lg mb-4">Serviços</h3>
+            <ul class="space-y-2 text-sm text-gray-300">
+              <li><a href="#" class="hover:text-white hover:underline">Portal de Serviços</a></li>
+              <li><a href="#" class="hover:text-white hover:underline">Ouvidoria</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="border-t border-gray-700 pt-6 flex flex-col md:flex-row justify-between items-center gap-4">
+          <div class="flex items-center gap-2">
+            <span class="font-bold text-xl">gov.br</span>
+            <span class="text-sm text-gray-400">Ministério da Gestão e da Inovação em Serviços Públicos</span>
+          </div>
+          <p class="text-xs text-gray-400">Versão 1.0.0</p>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

@@ -1,0 +1,60 @@
+<%= form_with(model: equipment, class: "contents") do |form| %>
+  <% if equipment.errors.any? %>
+    <div id="error_explanation" class="bg-red-50 text-red-500 px-3 py-2 font-medium rounded-md mt-3 mb-5 border border-red-200">
+      <h2 class="text-lg font-bold"><%= pluralize(equipment.errors.count, "erro") %> impediram o salvamento:</h2>
+      <ul class="list-disc ml-6 mt-2">
+        <% equipment.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="space-y-6 bg-white p-6 rounded-xl shadow-sm border border-gray-200">
+    <div>
+      <%= form.label :kind, "Tipo de Equipamento", class: "block text-sm font-medium text-gray-700 mb-1" %>
+      <%= form.select :kind, [['Notebook', 'notebook'], ['Impressora', 'printer']], { prompt: "Selecione o tipo..." }, class: "block w-full rounded-md border-gray-300 shadow-sm focus:border-[#1351b4] focus:ring-[#1351b4] sm:text-sm" %>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div>
+        <%= form.label :brand, "Marca", class: "block text-sm font-medium text-gray-700 mb-1" %>
+        <%= form.text_field :brand, class: "block w-full rounded-md border-gray-300 shadow-sm focus:border-[#1351b4] focus:ring-[#1351b4] sm:text-sm", placeholder: "Ex: Dell, HP" %>
+      </div>
+
+      <div>
+        <%= form.label :model, "Modelo", class: "block text-sm font-medium text-gray-700 mb-1" %>
+        <%= form.text_field :model, class: "block w-full rounded-md border-gray-300 shadow-sm focus:border-[#1351b4] focus:ring-[#1351b4] sm:text-sm", placeholder: "Ex: Latitude 5420" %>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div>
+        <%= form.label :serial_number, "Número de Série", class: "block text-sm font-medium text-gray-700 mb-1" %>
+        <%= form.text_field :serial_number, class: "block w-full rounded-md border-gray-300 shadow-sm focus:border-[#1351b4] focus:ring-[#1351b4] sm:text-sm", placeholder: "Ex: ABC123456" %>
+      </div>
+
+      <div>
+        <%= form.label :responsible, "Responsável", class: "block text-sm font-medium text-gray-700 mb-1" %>
+        <%= form.text_field :responsible, class: "block w-full rounded-md border-gray-300 shadow-sm focus:border-[#1351b4] focus:ring-[#1351b4] sm:text-sm", placeholder: "Ex: Pedro" %>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div>
+        <%= form.label :acquisition_date, "Data de Aquisição", class: "block text-sm font-medium text-gray-700 mb-1" %>
+        <%= form.date_field :acquisition_date, class: "block w-full rounded-md border-gray-300 shadow-sm focus:border-[#1351b4] focus:ring-[#1351b4] sm:text-sm" %>
+      </div>
+
+      <div>
+        <%= form.label :status, "Status", class: "block text-sm font-medium text-gray-700 mb-1" %>
+        <%= form.select :status, ['Disponível', 'Em uso'], { prompt: "Selecione o status..." }, class: "block w-full rounded-md border-gray-300 shadow-sm focus:border-[#1351b4] focus:ring-[#1351b4] sm:text-sm" %>
+      </div>
+    </div>
+
+    <div class="pt-4 flex items-center justify-end gap-3">
+      <%= link_to "Cancelar", equipment_index_path, class: "px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#1351b4]" %>
+      <%= form.submit "Salvar Equipamento", class: "px-4 py-2 text-sm font-medium text-white bg-[#1351b4] border border-transparent rounded-md hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#1351b4] cursor-pointer" %>
+    </div>
+  </div>
+<% end %>

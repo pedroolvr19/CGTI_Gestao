@@ -8,3 +8,14 @@
  *
  * Consider organizing styles into separate files for maintainability.
  */
+
+@import "datetimepicker.css";
+@import "header.css";
+@import "menu.css";
+@import "table.css";
+
+.equipment-tag {
+    min-width: 110px;
+    justify-content: center;
+    display: inline-flex;
+}

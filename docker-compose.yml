@@ -9,5 +9,19 @@ services:
     ports:
       - "5433:5432"
 
+  web:
+    build: .
+    command: "./bin/rails server -b 0.0.0.0"
+    ports:
+      - "3001:3000"
+    environment:
+      - DATABASE_URL=postgres://postgres:postgres@db:5432/gestao_equipamentos_production
+      - RAILS_MASTER_KEY=${RAILS_MASTER_KEY}
+    depends_on:
+      - db
+    volumes:
+      - storage_data:/rails/storage
+
 volumes:
   postgres_data:
+  storage_data:

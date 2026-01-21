@@ -1,0 +1,38 @@
+.br-menu {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 9999;
+    display: block !important;
+    visibility: hidden;
+    transition: visibility 0s linear 0.3s;
+}
+
+.br-menu.active {
+    visibility: visible;
+    transition-delay: 0s;
+}
+
+.br-menu .menu-container {
+    display: block !important;
+}
+
+.br-menu .menu-panel {
+    transform: translateX(-100%);
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.br-menu.active .menu-panel {
+    transform: translateX(0);
+}
+
+.br-menu .menu-scrim {
+    opacity: 0;
+    transition: opacity 0.3s linear;
+}
+
+.br-menu.active .menu-scrim {
+    opacity: 1;
+}

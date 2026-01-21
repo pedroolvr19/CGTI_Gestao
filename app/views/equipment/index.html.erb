@@ -1,82 +1,155 @@
 <% content_for :title, "Equipamentos" %>
 
-<div class="w-full">
   <% if notice.present? %>
-    <div class="mb-5 p-4 text-green-700 bg-green-100 rounded-lg border border-green-200" role="alert">
-      <%= notice %>
+    <div class="br-message success mb-3" role="alert">
+      <div class="icon"><i class="fas fa-check-circle" aria-hidden="true"></i></div>
+      <div class="content"><span class="message-title">Sucesso:</span><span class="message-body"><%= notice %></span></div>
+      <div class="close">
+        <button class="br-button circle small" type="button" aria-label="Fechar"><i class="fas fa-times" aria-hidden="true"></i></button>
+      </div>
     </div>
   <% end %>
 
-  <div class="flex flex-col md:flex-row justify-between items-center mb-8 gap-4">
-    <div>
-      <h1 class="font-bold text-3xl text-[#1351b4]">Equipamentos</h1>
-      <p class="text-gray-600">Gerencie o inventário de ativos de TI</p>
-    </div>
-    <%= link_to new_equipment_path, class: "flex items-center gap-2 px-4 py-2 bg-[#1351b4] text-white rounded-full font-bold hover:bg-blue-800 transition-colors shadow-sm" do %>
-      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
-      </svg>
-      Novo Equipamento
-    <% end %>
-  </div>
+  <div class="row justify-content-center">
+    <div class="col-12">
+      <div class="d-flex justify-content-end align-items-center mb-3">
+        <%= link_to new_equipment_path, class: "br-button primary" do %>
+          <i class="fas fa-plus mr-1" aria-hidden="true"></i>
+          Novo Equipamento
+        <% end %>
+      </div>
 
-  <div class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
-    <div class="overflow-x-auto">
-      <table class="min-w-full divide-y divide-gray-200">
-        <thead class="bg-gray-50">
-          <tr>
-            <th scope="col" class="px-6 py-3 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Tipo</th>
-            <th scope="col" class="px-6 py-3 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Marca/Modelo</th>
-            <th scope="col" class="px-6 py-3 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Série</th>
-            <th scope="col" class="px-6 py-3 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Responsável</th>
-            <th scope="col" class="px-6 py-3 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Aquisição</th>
-            <th scope="col" class="px-6 py-3 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Status</th>
-            <th scope="col" class="relative px-6 py-3"><span class="sr-only">Ações</span></th>
-          </tr>
-        </thead>
-        <tbody class="bg-white divide-y divide-gray-200">
-          <% if @equipment.any? %>
-            <% @equipment.each do |equipment| %>
-              <tr class="hover:bg-gray-50 transition-colors">
-                <td class="px-6 py-4 whitespace-nowrap">
-                  <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full <%= equipment.notebook? ? 'bg-blue-100 text-blue-800' : 'bg-purple-100 text-purple-800' %>">
-                    <%= equipment.kind == 'printer' ? 'Impressora' : equipment.kind.capitalize %>
-                  </span>
-                </td>
-                <td class="px-6 py-4 whitespace-nowrap">
-                  <div class="text-sm font-medium text-gray-900"><%= equipment.brand %></div>
-                  <div class="text-sm text-gray-500"><%= equipment.model %></div>
-                </td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                  <%= equipment.serial_number %>
-                </td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                  <%= equipment.responsible %>
-                </td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                  <%= equipment.acquisition_date&.strftime("%d/%m/%Y") %>
-                </td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                  <%= equipment.status %>
-                </td>
-                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                  <div class="flex items-center justify-end gap-3">
-                    <%= link_to "Ver", equipment, class: "text-[#1351b4] hover:text-blue-900 font-bold" %>
-                    <%= link_to "Editar", edit_equipment_path(equipment), class: "text-gray-600 hover:text-gray-900" %>
-                    <%= button_to "Excluir", equipment, method: :delete, class: "text-red-600 hover:text-red-900 cursor-pointer bg-transparent border-none p-0", data: { turbo_confirm: "Tem certeza?" } %>
-                  </div>
-                </td>
+      <div class="br-table" data-search="data-search" data-selection="data-selection" data-collapse="data-collapse" data-random="data-random">
+        <div class="table-header">
+          <div class="top-bar">
+            <div class="table-title">Equipamentos</div>
+            <div class="actions-trigger text-nowrap">
+              <button class="br-button circle" type="button" id="button-dropdown-density" title="Ver mais opções" data-toggle="dropdown" data-target="target01-52512" aria-label="Definir densidade da tabela" aria-haspopup="true" aria-live="polite"><i class="fas fa-ellipsis-v" aria-hidden="true"></i>
+              </button>
+              <div class="br-list" id="target01-52512" role="menu" aria-labelledby="button-dropdown-density" hidden="hidden">
+                <%= link_to equipment_index_path, class: "br-item", role: "menuitem" do %>
+                  Limpar Filtro
+                <% end %>
+              </div>
+            </div>
+            <div class="search-trigger">
+              <button class="br-button circle" type="button" id="button-input-search" data-toggle="search" aria-label="Abrir busca" aria-controls="table-searchbox-52512"><i class="fas fa-search" aria-hidden="true"></i>
+              </button>
+            </div>
+          </div>
+          <div class="search-bar">
+            <%= form_with url: equipment_index_path, method: :get, local: true, class: "br-input" do |form| %>
+              <label for="table-searchbox-52512">Buscar na tabela</label>
+              <%= form.text_field :query, id: "table-searchbox-52512", type: "search", placeholder: "Buscar na tabela", aria: { labelledby: "button-input-search", label: "Buscar na tabela" }, value: params[:query] %>
+              <button class="br-button" type="submit" aria-label="Buscar"><i class="fas fa-search" aria-hidden="true"></i>
+              </button>
+            <% end %>
+            <button class="br-button circle" type="button" data-dismiss="search" aria-label="Fechar busca"><i class="fas fa-times" aria-hidden="true"></i>
+            </button>
+          </div>
+          <div class="selected-bar">
+            <div class="info"><span class="count">0</span><span class="text">item selecionado</span></div>
+            <div class="actions-trigger text-nowrap">
+              <button class="br-button circle inverted" type="button" id="button-dropdown-selection" data-toggle="dropdown" data-target="target02-52512" aria-controls="target02-52512" aria-label="Ver mais opções de ação" aria-haspopup="true"><i class="fas fa-ellipsis-v" aria-hidden="true"></i>
+              </button>
+              <div class="br-list" id="target02-52512" role="menu" aria-labelledby="button-dropdown-selection" hidden="hidden">
+                <button class="br-item" type="button" data-toggle="" role="menuitem">Ação 1
+                </button><span class="br-divider"></span>
+                <button class="br-item" type="button" role="menuitem">Ação 2
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <table>
+          <caption>Lista de Equipamentos</caption>
+          <thead>
+            <tr>
+              <td class="column-collapse" scope="col" aria-hidden="true"></td>
+              <th class="column-checkbox" scope="col">
+                <div class="br-checkbox hidden-label">
+                  <input id="check-all-52512" name="check-all-52512" type="checkbox" aria-label="Selecionar tudo" data-parent="check-01-52512"/>
+                  <label for="check-all-52512">Selecionar todas as linhas</label>
+                </div>
+              </th>
+              <th scope="col">Tipo</th>
+              <th scope="col">Marca/Modelo</th>
+              <th scope="col">Tombamento</th>
+              <th scope="col">Responsável</th>
+              <th scope="col">Aquisição</th>
+              <th scope="col">Status</th>
+              <th scope="col">Termo/Relatório</th>
+              <th scope="col">Ações</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% if @equipment.any? %>
+              <% @equipment.each_with_index do |equipment, index| %>
+                <tr>
+                  <td>
+                    <button class="br-button circle small" type="button" id="button-line-<%= index %>-52512" aria-label="Expandir/Retrair Rótulo 01" data-toggle="collapse" data-target="collapse-<%= index %>-4-52512" aria-describedby="collapse-<%= index %>-4-52512"><i class="fas fa-chevron-down" aria-hidden="true"></i>
+                    </button>
+                  </td>
+                  <td>
+                    <div class="br-checkbox hidden-label">
+                      <input id="check-line-<%= index %>-52512" name="check-line-<%= index %>-52512" type="checkbox" aria-label="Selecionar linha <%= index %>" data-child="check-01-52512"/>
+                      <label for="check-line-<%= index %>-52512">Selecionar linha <%= index %></label>
+                    </div>
+                  </td>
+                  <td data-th="Tipo">
+                    <span class="br-tag equipment-tag <%= equipment.notebook? ? 'interaction' : 'highlight' %>">
+                      <%= equipment.kind == 'printer' ? 'Impressora' : equipment.kind.capitalize %>
+                    </span>
+                  </td>
+                  <td data-th="Marca/Modelo">
+                    <div class="text-bold"><%= equipment.brand %></div>
+                    <div><%= equipment.model %></div>
+                  </td>
+                  <td data-th="Tombamento"><%= equipment.serial_number %></td>
+                  <td data-th="Responsável"><%= equipment.responsible %></td>
+                  <td data-th="Aquisição"><%= equipment.acquisition_date&.strftime("%d/%m/%Y") %></td>
+                  <td data-th="Status"><%= equipment.status %></td>
+                  <td data-th="Termo/Relatório">
+                    <% if equipment.document.attached? %>
+                      <%= link_to rails_blob_path(equipment.document, disposition: "attachment"), class: "br-button circle small secondary", title: "Baixar Termo/Relatório" do %>
+                        <i class="fas fa-file-download" aria-hidden="true"></i>
+                      <% end %>
+                    <% else %>
+                      <button class="br-button circle small secondary" disabled title="Sem documento">
+                        <i class="fas fa-file" aria-hidden="true"></i>
+                      </button>
+                    <% end %>
+                  </td>
+                  <td data-th="Ações">
+                    <div class="d-flex">
+                      <%= link_to equipment, class: "br-button circle small secondary mr-1", title: "Ver" do %>
+                        <i class="fas fa-eye" aria-hidden="true"></i>
+                      <% end %>
+                      <%= link_to edit_equipment_path(equipment), class: "br-button circle small secondary mr-1", title: "Editar" do %>
+                        <i class="fas fa-edit" aria-hidden="true"></i>
+                      <% end %>
+
+                    </div>
+                  </td>
+                </tr>
+                <tr class="collapse">
+                  <td id="collapse-<%= index %>-4-52512" aria-hidden="true" hidden="hidden" colspan="10">
+                    Detalhes adicionais do equipamento <%= equipment.brand %> <%= equipment.model %> (Série: <%= equipment.serial_number %>).
+                  </td>
+                </tr>
+              <% end %>
+            <% else %>
+              <tr>
+                <td colspan="10" class="text-center">Nenhum equipamento cadastrado.</td>
               </tr>
             <% end %>
-          <% else %>
-            <tr>
-              <td colspan="6" class="px-6 py-10 text-center text-gray-500">
-                Nenhum equipamento cadastrado.
-              </td>
-            </tr>
-          <% end %>
-        </tbody>
-      </table>
+          </tbody>
+        </table>
+        <div class="table-footer">
+          <div class="d-flex justify-content-center">
+        <%== pagy_bootstrap_nav(@pagy) %>
+      </div>
+        </div>
+      </div>
     </div>
   </div>
-</div>

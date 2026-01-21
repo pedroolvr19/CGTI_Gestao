@@ -3,7 +3,13 @@ class EquipmentController < ApplicationController
 
   # GET /equipment or /equipment.json
   def index
-    @equipment = Equipment.all
+    scope = Equipment.with_attached_document.order(created_at: :desc)
+
+    if params[:query].present?
+      scope = scope.where("brand ILIKE :query OR model ILIKE :query OR serial_number ILIKE :query OR responsible ILIKE :query", query: "%#{params[:query]}%")
+    end
+
+    @pagy, @equipment = pagy(scope)
   end
 
   # GET /equipment/1 or /equipment/1.json
@@ -67,6 +73,6 @@ class EquipmentController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def equipment_params
-      params.expect(equipment: [ :kind, :brand, :model, :serial_number, :acquisition_date, :status, :responsible ])
+      params.expect(equipment: [ :kind, :brand, :model, :serial_number, :acquisition_date, :status, :responsible, :document ])
     end
 end

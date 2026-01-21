@@ -1,0 +1,30 @@
+.header-login .dropdown {
+    position: relative;
+}
+
+.header-login .br-list {
+    position: absolute;
+    top: calc(100% + 4px);
+    right: 0;
+    z-index: 9999;
+    background-color: #ffffff;
+    min-width: 120px;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16);
+    border-radius: 4px;
+}
+
+.header-login .br-list:not([hidden]) {
+    animation: dropdown-fade-in 0.2s ease-out forwards;
+}
+
+@keyframes dropdown-fade-in {
+    0% {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

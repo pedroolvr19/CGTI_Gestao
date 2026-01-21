@@ -1,23 +1,68 @@
-<% content_for :title, "Showing equipment" %>
+<% content_for :title, "#{@equipment.brand} #{@equipment.model}" %>
 
-<div class="md:w-2/3 w-full">
   <% if notice.present? %>
-    <p class="py-2 px-3 bg-green-50 mb-5 text-green-500 font-medium rounded-md inline-block" id="notice"><%= notice %></p>
+    <div class="br-message success mb-3" role="alert">
+      <div class="icon"><i class="fas fa-check-circle" aria-hidden="true"></i></div>
+      <div class="content"><span class="message-title">Sucesso:</span><span class="message-body"><%= notice %></span></div>
+      <div class="close">
+        <button class="br-button circle small" type="button" aria-label="Fechar"><i class="fas fa-times" aria-hidden="true"></i></button>
+      </div>
+    </div>
   <% end %>
 
-  <h1 class="font-bold text-4xl">Showing equipment</h1>
-
-  <div class="my-5">
-    <p class="font-medium mb-1 text-gray-500">Número de Série</p>
-    <p class="text-lg"><%= @equipment.serial_number %></p>
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <div class="br-card mt-5">
+        <div class="card-header">
+          <div class="d-flex justify-content-between align-items-center">
+            <div class="d-flex align-items-center">
+              <span class="br-avatar mr-3" title="<%= @equipment.brand %>">
+                <span class="content"><%= @equipment.brand[0].upcase %></span>
+              </span>
+              <div class="ml-3">
+                <div class="text-weight-semi-bold text-up-02"><%= @equipment.brand %> <%= @equipment.model %></div>
+                <div><%= @equipment.kind == 'printer' ? 'Impressora' : @equipment.kind.capitalize %></div>
+              </div>
+            </div>
+            <div class="ml-auto">
+              <span class="br-tag <%= @equipment.status == 'Em uso' ? 'success' : 'info' %>"><%= @equipment.status %></span>
+            </div>
+          </div>
+        </div>
+        <div class="card-content">
+          <div class="row">
+            <div class="col-sm-6 mb-3">
+              <div class="text-weight-semi-bold">Número de Série</div>
+              <div><%= @equipment.serial_number %></div>
+            </div>
+            <div class="col-sm-6 mb-3">
+              <div class="text-weight-semi-bold">Responsável</div>
+              <div><%= @equipment.responsible.presence || "-" %></div>
+            </div>
+            <div class="col-sm-6 mb-3">
+              <div class="text-weight-semi-bold">Data de Aquisição</div>
+              <div><%= @equipment.acquisition_date&.strftime("%d/%m/%Y") %></div>
+            </div>
+            <div class="col-sm-6 mb-3">
+              <div class="text-weight-semi-bold">Termo/Relatório</div>
+              <div>
+                <% if @equipment.document.attached? %>
+                  <%= link_to rails_blob_path(@equipment.document, disposition: "attachment"), class: "br-button secondary small mt-1", title: "Baixar Termo/Relatório" do %>
+                    <i class="fas fa-file-download mr-1" aria-hidden="true"></i> Baixar
+                  <% end %>
+                <% else %>
+                  <span>-</span>
+                <% end %>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card-footer">
+          <div class="d-flex justify-content-end">
+            <%= link_to "Voltar", equipment_index_path, class: "br-button secondary mr-2" %>
+            <%= link_to "Editar", edit_equipment_path(@equipment), class: "br-button primary" %>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
-
-  <div class="my-5">
-    <p class="font-medium mb-1 text-gray-500">Responsável</p>
-    <p class="text-lg"><%= @equipment.responsible %></p>
-  </div>
-
-  <%= link_to "Edit this equipment", edit_equipment_path(@equipment), class: "w-full sm:w-auto text-center rounded-md px-3.5 py-2.5 bg-gray-100 hover:bg-gray-50 inline-block font-medium" %>
-  <%= link_to "Back to equipment", equipment_index_path, class: "w-full sm:w-auto text-center mt-2 sm:mt-0 sm:ml-2 rounded-md px-3.5 py-2.5 bg-gray-100 hover:bg-gray-50 inline-block font-medium" %>
-  <%= button_to "Destroy this equipment", @equipment, method: :delete, form_class: "sm:inline-block mt-2 sm:mt-0 sm:ml-2", class: "w-full rounded-md px-3.5 py-2.5 text-white bg-red-600 hover:bg-red-500 font-medium cursor-pointer", data: { turbo_confirm: "Are you sure?" } %>
-</div>

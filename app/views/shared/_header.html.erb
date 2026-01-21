@@ -1,0 +1,56 @@
+      <nav class="br-skiplink" role="menubar">
+        <a class="br-item" href="#main-content" role="menuitem" accesskey="1">Ir para o conteúdo <span aria-hidden="true">(1/4)</span> <span aria-hidden="true" class="br-tag text ml-1">1</span></a>
+        <a class="br-item" href="#header-navigation" role="menuitem" accesskey="2">Ir para o menu <span aria-hidden="true">(2/4)</span> <span aria-hidden="true" class="br-tag text ml-1">2</span></a>
+        <a class="br-item" href="#main-searchbox" role="menuitem" accesskey="3">Ir para a busca <span aria-hidden="true">(3/4)</span> <span aria-hidden="true" class="br-tag text ml-1">3</span></a>
+        <a class="br-item" href="#footer" role="menuitem" accesskey="4">Ir para o rodapé <span aria-hidden="true">(4/4)</span> <span aria-hidden="true" class="br-tag text ml-1">4</span></a>
+      </nav>
+
+      <header class="br-header mb-4" id="header" data-sticky="data-sticky">
+        <div class="container-lg">
+          <div class="header-top">
+            <div class="header-logo">
+              <%= image_tag "logo-gov.png", alt: "logo" %>
+              <span class="br-divider vertical"></span>
+              <div class="header-sign ml-2">Superintendência do Desenvolvimento do Nordeste</div>
+            </div>
+            <div class="header-actions">
+              <div class="header-login">
+                <div class="header-sign-in">
+                  <% if authenticated? %>
+                    <div class="dropdown" data-controller="dropdown">
+                      <button class="br-sign-in small" type="button" data-action="click->dropdown#toggle" aria-label="Menu do Usuário">
+                        <i class="fas fa-user" aria-hidden="true"></i>
+                        <span class="d-sm-inline">Olá, <%= Current.user.email_address %></span>
+                        <i class="fas fa-caret-down ml-1" aria-hidden="true"></i>
+                      </button>
+                      <div class="br-list" id="avatar-dropdown" hidden data-dropdown-target="menu">
+                        <%= link_to session_path, data: { turbo_method: :delete }, class: "br-item", role: "menuitem" do %>
+                          <span class="content">Sair</span>
+                        <% end %>
+                      </div>
+                    </div>
+                  <% else %>
+                    <%= link_to new_session_path, class: "br-sign-in small" do %>
+                      <i class="fas fa-user" aria-hidden="true"></i>
+                      <span class="d-sm-inline">Entrar</span>
+                    <% end %>
+                  <% end %>
+                </div>
+                <div class="header-avatar"></div>
+              </div>
+            </div>
+          </div>
+          <div class="header-bottom">
+            <div class="header-menu">
+              <div class="header-menu-trigger" id="header-navigation">
+                <button class="br-button small circle" type="button" aria-label="Menu" data-toggle="menu" data-target="#main-navigation" id="navigation">
+                  <i class="fas fa-bars" aria-hidden="true"></i>
+                </button>
+              </div>
+              <div class="header-info">
+                <div class="header-title">Gestão de Equipamentos</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </header>
